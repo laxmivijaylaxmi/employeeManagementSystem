@@ -1,6 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaBuilding, FaTachometerAlt, FaUser, FaCalendarAlt, FaDollarSign, FaCog } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaTachometerAlt,
+  FaUserPlus,
+  FaUsers,
+  FaCalendarCheck,
+  FaDollarSign,
+  FaCog,
+  FaDesktop,
+} from "react-icons/fa";
 
 const AdminSidebar = () => {
   return (
@@ -9,31 +18,94 @@ const AdminSidebar = () => {
         <h2 className="text-2xl text-center font-pacific">Employee MS</h2>
       </div>
       <div className="px-4">
-        <NavLink 
-          className={({ isActive }) => `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`}
-          to="/admin-dashboard" 
-          style={{ textDecoration: 'none', color: 'inherit' }}
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/admin-dashboard"
+        style={{ textDecoration: "none", color: "inherit" }}
+      end
         >
           <FaTachometerAlt />
           <span>Dashboard</span>
         </NavLink>
-        <NavLink 
-          className={({ isActive }) => `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`} 
-          to="/home" 
-          style={{ textDecoration: 'none', color: 'inherit' }}
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/home"
+          style={{ textDecoration: "none", color: "inherit" }}
         >
-          <FaUser />
-          <span> Create Employee</span>
+          <FaUserPlus />
+          <span>Create Employee</span>
         </NavLink>
-        <NavLink 
-          className={({ isActive }) => `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 block py-2.5 px-4 rounded`} 
-          to="/employee-list" 
-          style={{ textDecoration: 'none', color: 'inherit' }}
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/employee-list"
+          style={{ textDecoration: "none", color: "inherit" }}
         >
-          <FaUser />
+          <FaUsers />
           <span>Employee List</span>
         </NavLink>
-        
+
+        {/*  */}
+
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/admin-dashboard/department"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <FaBuilding />
+          <span>Department</span>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/leave"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <FaCalendarCheck />
+          <span>Leave</span>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/salary"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <FaDollarSign />
+          <span>Salary</span>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500" : ""
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+          to="/settings"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <FaCog />
+          <span>Settings</span>
+        </NavLink>
       </div>
     </div>
   );

@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { useAuth } from "../context/authContext";
 import AdminSidebar from "../component/dashboard/AdminSidebar";
 import Navbar from "../component/Navbar";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
 
 const EditEmployee = () => {
   const { user } = useAuth();
+  const{id} = useParams()
+  console.log("Id from URL:",id)
+
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     name: "",
@@ -13,7 +21,7 @@ const EditEmployee = () => {
     number: "",
     designation: "",
     gender: "",
-    courses: [],
+    courses: "",
     image: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,6 +51,16 @@ const EditEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    const token = user?.token || localStorage.getItem("token")
+    if (!token) {
+   toast.error("Token is required")
+      return;
+    }
+    console.log("Employee ID on submit:", id);  
+    if(!id){
+      toast.error("Employee ID is missing");
+      return;
+    }
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
@@ -56,19 +74,23 @@ const EditEmployee = () => {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:7000/admin/update-employee/id",
+    const response = await axios.put(
+        `http://localhost:7000/admin/update-employee/${id}`,
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'multipart/form-data', 
           },
         }
       );
-      alert("Employee updated successfully!");
-      console.log("Employee Updated:", response.data);
-    } catch (error) {
-      console.error("Error updating employee:", error);
+      toast.success("Employee updated successfully:")
+      console.log('Employee updated successfully:', response.data);
+          navigate("/employee-list")
+   
+    } 
+    catch (error) {
+      console.log("Error updating employee:", error);
       alert(error.response?.data?.message || "Failed to update employee. Please try again.");
     } finally {
       setIsSubmitting(false);

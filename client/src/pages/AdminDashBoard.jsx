@@ -1,6 +1,7 @@
 import React from "react";
 import AdminSidebar from "../component/dashboard/AdminSidebar";
 import Navbar from "../component/Navbar";
+import { Outlet } from "react-router-dom";
 
 const AdminDashBoard = () => {
   return (
@@ -10,17 +11,16 @@ const AdminDashBoard = () => {
       <div className="ml-64 flex-1 bg-gray-100 h-screen text-gray-800">
         <Navbar />
 
-        <div className="flex justify-center items-center h-full">
-          <div className="bg-teal-600 text-white p-10 rounded-lg shadow-lg max-w-3xl w-full mx-4">
-            <h2 className="text-4xl font-bold text-center font-pacific">
-              Welcome to the Admin Panel
-            </h2>
-            <p className="mt-4 text-lg text-center">
-              Manage the system, monitor activities, and control user settings
-              from this dashboard.
-            </p>
-          </div>
-        </div>
+        {/* <div className="flex items-center justify-center mt-10 p-6 bg-teal-500 font-pacific text-white rounded font-profic">
+  <div className="text-center max-w-2xl ">
+    <h1 className="text-3xl font-bold text-white">Welcome to the Admin Dashboard</h1>
+    <p className="mt-6 text-lg">
+      Here you can manage your departments, users, and other admin functionalities.
+    </p>
+  </div>
+</div> */}
+
+        <Outlet />
       </div>
     </div>
   );

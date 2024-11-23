@@ -11,6 +11,7 @@ import {
 } from "../controller/AdminController.js";
 import { verifyMiddlewareUser } from "../middleware/auth.js";
 import upload from "../middleware/multer.js";
+import { addDepartment, deleteDepartment, EditDepartment, getAllDepartment } from "../controller/DepartmentController.js";
 
 const adminRoute = express.Router();
 
@@ -36,8 +37,12 @@ adminRoute.put(
   upload.single("image"),
   updateEmployee
 );
-adminRoute.get("/status", totalCount)
+adminRoute.get("/status", totalCount);
 
-adminRoute.delete("/delete-employee/:id", verifyMiddlewareUser, deleteEmployee);
 
+adminRoute.delete("/delete/:id", verifyMiddlewareUser, deleteEmployee);
+adminRoute.get("/all-department",verifyMiddlewareUser,getAllDepartment)
+adminRoute.post("/department/add",verifyMiddlewareUser,addDepartment);
+adminRoute.put("/department/:id",verifyMiddlewareUser,EditDepartment);
+adminRoute.delete("/department-delete/:id",verifyMiddlewareUser,deleteDepartment)
 export default adminRoute;

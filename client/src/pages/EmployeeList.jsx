@@ -69,34 +69,30 @@ const EmployeeList = () => {
     fetchEmployees();
   }, [user]);
 
-  const handleEdit = (e) => {
-    navigate("/edit-employee");
+ 
+
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this employee?");
+    if (!confirm) return;
+
+    const token = user?.token || localStorage.getItem("token");
+    try {
+      await axios.delete(`http://localhost:7000/admin/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setEmployees((prev) => prev.filter((employee) => employee._id !== id));
+      alert("Employee deleted successfully");
+    } catch (err) {
+      console.error(
+        "Error deleting employee:",
+        err.response ? err.response.data : err.message
+      );
+      alert("Failed to delete employee");
+    }
   };
-
-  // const handleDelete = async (id) => {
-  //   const confirm = window.confirm("Are you sure you want to delete this employee?");
-  //   if (!confirm) return;
-
-  //   const token = user?.token || localStorage.getItem("token");
-  //   try {
-  //     await axios.delete(`http://localhost:7000/admin/delete/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     setEmployees((prev) => prev.filter((employee) => employee._id !== id));
-  //     alert("Employee deleted successfully");
-  //   } catch (err) {
-  //     console.error(
-  //       "Error deleting employee:",
-  //       err.response ? err.response.data : err.message
-  //     );
-  //     alert("Failed to delete employee");
-  //   }
-  // };
-  const handleDelete = (e)=>{
-    navigate("/delete-employee")
-  }
+  
 
   return (
     <div className="flex">
@@ -114,45 +110,59 @@ const EmployeeList = () => {
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white shadow-md rounded-lg text-sm">
               <thead>
-                <tr className="bg-gray-200 text-left text-sm leading-normal">
-                  <th className="py-2 px-4">ID</th>
-                  <th className="py-2 px-4">Name</th>
-                  <th className="py-2 px-4">Email</th>
-                  <th className="py-2 px-4">Number</th>
-                  <th className="py-2 px-4">Designation</th>
-                  <th className="py-2 px-4">Courses</th>
-                  <th className="py-2 px-4">Gender</th>
-                  <th className="py-2 px-4">Image</th>
-                  <th className="py-2 px-4">Actions</th>
+                <tr className="bg-gray-200 text-center text-sm leading-normal">
+                  <th className="py-1 px-2">ID</th>
+                  <th className="py-1 px-2">Name</th>
+                  <th className="py-1 px-2">Email</th>
+                  <th className="py-1 px-2">Number</th>
+                  <th className="py-1 px-2">Designation</th>
+                  <th className="py-1 px-2">Courses</th>
+                  <th className="py-1 px-2">Gender</th>
+                  <th className="py-1 px-2">Image</th>
+                  <th className="py-1 px-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {employees.map((employee) => (
+                  
                   <tr
                     key={employee._id}
                     className="border-b border-gray-200 hover:bg-gray-100 text-sm"
                   >
-                    <td className="py-2 px-4">{employee._id}</td>
-                    <td className="py-2 px-4">{employee.name}</td>
-                    <td className="py-2 px-4">{employee.email}</td>
-                    <td className="py-2 px-4">{employee.number}</td>
-                    <td className="py-2 px-4">{employee.designation}</td>
-                    <td className="py-2 px-4">{employee.courses.join(", ")}</td>
-                    <td className="py-2 px-4">{employee.gender}</td>
-                    <td className="py-2 px-4">
-                      <img
-                        src={`${"http://localhost:7000/images/"}${employee.images}`}
-                        alt={employee.name}
-                        className="w-10 h-10 rounded-full"
-                      />
+                    <td className="py-1 px-2">{employee._id}</td>
+                    <td className="py-1 px-2">{employee.name}</td>
+                    <td className="py-1 px-2">{employee.email}</td>
+                    <td className="py-1 px-2">{employee.number}</td>
+                    <td className="py-1 px-2">{employee.designation}</td>
+                    <td className="py-1 px-2">{employee.courses.join(", ")}</td>
+                    <td className="py-1 px-2">{employee.gender}</td>
+                    <td className="py-1 px-2">
+                    <img
+                         src={`http://localhost:7000/${employee.image}`}
+                                     alt={employee.name}
+                                       className="w-10 h-10 rounded-full"
+                                                                   />
                     </td>
                     <td className="py-2 px-4 flex gap-2">
                       <button
-                        onClick={() => handleEdit(employee)}
+                        onClick={() => navigate(`/edit-employee/${employee._id}`) }
                         className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
                       >
                         Edit
                       </button>
+                      <button
+                        onClick={() => navigate(`/salary/${employee._id}`)}
+                        className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600"
+                      >
+                        Salary
+                      </button>
+                      <button
+                        onClick={() => navigate(`/leave/${employee._id}`)}
+                        className="bg-pink-500 text-white py-1 px-2 rounded hover:bg-pink-600"
+                      >
+                        Leave
+                      </button>
+                      
                       <button
                         onClick={() => handleDelete(employee._id)}
                         className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600"

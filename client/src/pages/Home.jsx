@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import Navbar from "../component/Navbar";
 import AdminSidebar from "../component/dashboard/AdminSidebar";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     number: "",
     designation: "",
     gender: "",
-    courses: [],
+    courses: "",
     image: null,
   });
 
@@ -36,6 +38,7 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
@@ -47,19 +50,24 @@ const Home = () => {
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
-
+    
     try {
+    
+
       const response = await axios.post(
         "http://localhost:7000/admin/create-employee",
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+             
           },
         }
       );
       console.log("Employee created successfully:", response.data);
       alert("Employee created successfully!");
+    navigate("/employee-list")
     } catch (error) {
       console.error("Error creating employee:", error);
       alert("Failed to create employee. Please try again.");
@@ -196,7 +204,7 @@ const Home = () => {
                   type="file"
                   name="image"
                   onChange={handleFileChange}
-                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+                  className="mt-1 p-1 border border-gray-300 rounded-lg w-full"
                 />
               </div>
 

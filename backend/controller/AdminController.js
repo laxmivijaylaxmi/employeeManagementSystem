@@ -82,7 +82,7 @@ const AdminLogin = async (req, res) => {
   }
 };
 
-// Verify user (protected route)
+
 export const verifyUser = async (req, res) => {
   try {
     // Ensure the user is authenticated
@@ -117,7 +117,7 @@ export const createEmployee = async (req, res) => {
     const { name, email, number, designation, gender, courses } = req.body;
     const image = req.file ? req.file.path : null;
 
-    // Create a new employee
+   
     const newEmployee = new Employee({
       name, email, number, designation, gender, courses, image,
     });
@@ -134,7 +134,7 @@ export const createEmployee = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
   const { name, email, number, designation, gender, courses } = req.body;
-  const image = req.file ? req.file.path : null;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;  // Assuming images are served from the public 'uploads' folder
 
   try {
     const employee = await Employee.findById(req.params.id);
@@ -142,20 +142,29 @@ export const updateEmployee = async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
+    // Update fields only if they are provided
     employee.name = name || employee.name;
     employee.email = email || employee.email;
     employee.number = number || employee.number;
     employee.designation = designation || employee.designation;
     employee.gender = gender || employee.gender;
     employee.courses = courses || employee.courses;
-    if (image) employee.image = image;
+
+    // Update image if a new one is uploaded
+    if (image) {
+      employee.image = image;
+    }
 
     const updatedEmployee = await employee.save();
-    return res.status(200).json({ message: "Employee updated successfully", employee: updatedEmployee });
+    return res.status(200).json({
+      message: "Employee updated successfully",
+      employee: updatedEmployee
+    });
   } catch (err) {
     return res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 // Delete employee
 export const deleteEmployee = async (req, res) => {
@@ -170,6 +179,7 @@ export const deleteEmployee = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 export const totalCount= async(req,res)=>{
   try{

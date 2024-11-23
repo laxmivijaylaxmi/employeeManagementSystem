@@ -9,6 +9,9 @@ const employeeSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   courses: { type: [String], required: true },
   image: { type: String, required: false },
+},
+{
+  timestamps: true, 
 });
 
 export default mongoose.model("Employee", employeeSchema);
